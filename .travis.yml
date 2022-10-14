@@ -1,24 +1,13 @@
-
+sudo: true
 language: node_js
- node_js:
- - "stable"
- cache:
- directories:
-   - node_modules
- script:
- - npm test
- - npm run build
+node_js:
+- node
 
+services:
+  - docker
 
+before_install:
+  - docker build -t anilvermaspeaks/docker-prod-workflow -f Dockerfile.dev .
 
-
-# sudo: required
-
-# services:
-#   - docker
-
-# before_install:
-#   - docker build -t anilvermaspeaks/docker-prod-workflow -f Dockerfile.dev .
-
-#   script:
-#     - docker run -e CI=true anilvermaspeaks/docker-prod-workflow npm run test -- --coverage
+  script:
+    - docker run -e CI=true anilvermaspeaks/docker-prod-workflow npm run test -- --coverage
